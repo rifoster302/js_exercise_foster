@@ -1,4 +1,7 @@
+from IPython.display import display, HTML
 
+# Construct and display the corrected HTML output based on the prompt requirements
+html_code = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +35,19 @@
         </ol>
     </p>
 
+    
+    <div id="part1-display">
+        <p><strong>Your driver is:</strong> <span id="display-driver-name">TODO</span></p>
+        <p><strong>License Plate:</strong> <span id="display-plate">TODO</span></p>
+        <p><strong>Number of Stops:</strong> <span id="display-stop-count">TODO</span></p>
+        <p><strong>First Stop Destination:</strong> <span id="display-first-stop">TODO</span></p>
+        <p><strong>Last Stop Destination:</strong> <span id="display-last-stop">TODO</span></p>
+        <p><strong>Passenger Names:</strong></p>
+        <ul id="display-passenger-names"></ul>
+        <p><strong>Fares:</strong> <span id="display-fares">TODO</span></p>
+        <p><strong>Total Fare:</strong> <span id="display-total-fare">TODO</span></p>
+    </div>
+
     <hr>
     <h2>Part 2</h2>
     <p>
@@ -46,22 +62,16 @@
         </ol>
     </p>
 
-
     <div id="rideshare-app">
-
         <p>Driver: <span id="display-driver">TODO</span></p>
-
         <p>Vehicle: <span id="display-vehicle">TODO</span></p>
-
         <p>Passengers:</p>
-        <ol id="display-passengers">
-        </ol>
+        <ol id="display-passengers"></ol>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
     <script type="text/javascript">
-
-        var trip = {
+        var rideshare = {
             "driver": {
                 "first_name": "Danny",
                 "last_name": "Dreyfus",
@@ -82,23 +92,40 @@
                 {"sequence": 2, "passenger": "Clara", "destination": "Dupont Circle", "fare": 7.99},
                 {"sequence": 3, "passenger": "Lee", "destination": "Washington Circle", "fare": 9.99}
             ]
-        }
+        };
 
-        console.log("---------------------")
-        console.log("PART 1...")
+        window.addEventListener("DOMContentLoaded", function () {
+            // Part 1 Display Logic
+            document.getElementById("display-driver-name").innerText = rideshare.driver.first_name;
+            document.getElementById("display-plate").innerText = rideshare.vehicle.licensePlate;
+            document.getElementById("display-stop-count").innerText = rideshare.stops.length;
+            document.getElementById("display-first-stop").innerText = rideshare.stops[0].destination;
+            document.getElementById("display-last-stop").innerText = rideshare.stops[rideshare.stops.length - 1].destination;
 
+            const passengerList = document.getElementById("display-passenger-names");
+            rideshare.stops.forEach(stop => {
+                const li = document.createElement("li");
+                li.innerText = stop.passenger;
+                passengerList.appendChild(li);
+            });
 
+            const fares = rideshare.stops.map(stop => stop.fare);
+            document.getElementById("display-fares").innerText = JSON.stringify(fares);
+            const totalFare = d3.sum(fares);
+            document.getElementById("display-total-fare").innerText = `$${totalFare.toFixed(2)}`;
 
-
-
-        console.log("---------------------")
-        console.log("PART 2...")
-
-
-
-
-
+            // Part 2 Logic
+            document.getElementById("display-driver").innerText = rideshare.driver.first_name;
+            document.getElementById("display-vehicle").innerText = `${rideshare.vehicle.make} ${rideshare.vehicle.model} (${rideshare.vehicle.licensePlate})`;
+            const part2PassengerList = document.getElementById("display-passengers");
+            rideshare.stops.forEach(stop => {
+                const li = document.createElement("li");
+                li.innerText = stop.passenger;
+                part2PassengerList.appendChild(li);
+            });
+        });
     </script>
 
 </body>
 </html>
+

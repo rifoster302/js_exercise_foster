@@ -92,3 +92,55 @@
     </script>
 </body>
 </html>
+
+
+    <script type="text/javascript">
+
+        console.log("---------------------")
+        console.log("PART 1...")
+
+        const isRaining = true;
+        const ownsUmbrella = false;
+
+        console.log("Is it raining?", isRaining);
+        console.log("Do you own an umbrella?", ownsUmbrella);
+
+        if (!isRaining) {
+            console.log("Skies are clear");
+        } else {
+            if (ownsUmbrella) {
+                console.log("Bring your umbrella");
+            } else {
+                console.log("Buy an umbrella");
+            }
+        }
+
+        console.log("---------------------")
+        console.log("PART 2...")
+
+        function advise(isRaining, ownsUmbrella) {
+            if (!isRaining) {
+                return "Skies are clear";
+            } else {
+                return ownsUmbrella ? "Bring your umbrella" : "Buy an umbrella";
+            }
+        }
+
+        console.log(advise(false, false)); // "Skies are clear"
+        console.log(advise(false, true));  // "Skies are clear"
+        console.log(advise(true, false));  // "Buy an umbrella"
+        console.log(advise(true, true));   // "Bring your umbrella"
+
+        console.log("---------------------")
+        console.log("PART 3...")
+
+        document.getElementById("advise").addEventListener("click", function () {
+            const raining = document.getElementById("switch-raining").checked;
+            const hasUmbrella = document.getElementById("switch-umbrella").checked;
+            const message = advise(raining, hasUmbrella);
+            document.getElementById("display-message").innerText = message;
+        });
+
+    </script>
+</body>
+</html>
