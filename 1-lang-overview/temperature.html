@@ -64,25 +64,45 @@
         console.log("---------------------")
         console.log("PART 1...")
 
-
-
+        const tempC1 = -270;
+        const tempF1 = (tempC1 * 9/5) + 32;
+        console.log(`Celsius: ${tempC1}°C`);
+        console.log(`Fahrenheit: ${tempF1}°F`);
 
 
         console.log("---------------------")
         console.log("PART 2...")
 
+        function calculateTemp(tempC) {
+            return (tempC * 9/5) + 32;
+        }
 
-
-
+        const tempC2 = -270;
+        const tempF2 = calculateTemp(tempC2);
+        console.log(`Celsius: ${tempC2}°C`);
+        console.log(`Fahrenheit: ${tempF2}°F`);
 
 
         console.log("---------------------")
         console.log("PART 3...")
 
+        const button = document.getElementById("calculate");
 
+        button.addEventListener("click", function() {
+            const inputValue = document.getElementById("input-temp-c").value;
+            const tempC = parseFloat(inputValue);
 
+            if (isNaN(tempC)) {
+                document.getElementById("display-temp-f").innerText = "Invalid input.";
+                return;
+            }
 
+            const tempF = calculateTemp(tempC);
+            document.getElementById("display-temp-f").innerText = `${tempF.toFixed(2)}°F`;
+            console.log(`Converted ${tempC}°C to ${tempF.toFixed(2)}°F`);
+        });
 
     </script>
 </body>
 </html>
+
