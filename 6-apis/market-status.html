@@ -92,21 +92,37 @@
             console.log("---------------------")
             console.log("PART 1...")
 
+            const markets = data.markets
+            console.log("Total markets:", markets.length)
 
+            const equityMarkets = markets.filter(market => market.market_type === "Equity")
+            console.log("Equity markets:", equityMarkets.length)
 
+            equityMarkets.forEach(m => {
+                console.log(`Market Type: ${m.market_type}, Region: ${m.region}`)
+            })
 
+            const market = equityMarkets.find(m => m.region === "United States")
+            console.log("US Market Info:")
+            console.log("Type:", market.market_type)
+            console.log("Exchanges:", market.primary_exchanges)
+            console.log("Open:", market.local_open)
+            console.log("Close:", market.local_close)
+            console.log("Status:", market.current_status.toUpperCase())
 
             console.log("---------------------")
             console.log("PART 2...")
 
-
-
+            document.getElementById("display-region").innerText = market.region
+            document.getElementById("display-type").innerText = market.market_type
+            document.getElementById("display-exchanges").innerText = market.primary_exchanges
+            document.getElementById("display-open").innerText = market.local_open
+            document.getElementById("display-close").innerText = market.local_close
+            document.getElementById("display-status").innerText = market.current_status.toUpperCase()
 
         }).catch(function(error) {
             console.error("ERROR:", error)
         })
-
-
 
     </script>
 </body>

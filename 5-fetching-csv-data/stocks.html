@@ -46,7 +46,6 @@
         </ol>
     </p>
 
-
     <h2>Part 2</h2>
     <p>
         Write JavaScript code to answer the questions below.
@@ -60,7 +59,6 @@
                 the latest day's date and adjusted closing price,
                 and the overall percent change.
             </li>
-
         </ol>
     </p>
 
@@ -83,7 +81,6 @@
             return `${(percentage * 100).toFixed(2)}%`
         }
 
-
         var symbol = "NFLX" // one of: [AAPL, GOOGL, MSFT, NFLX, NVDA, SPOT]
         var filename = `daily_adjusted_${symbol}.csv`
         var requestUrl = `https://raw.githubusercontent.com/prof-rossetti/intro-software-dev-python-book/refs/heads/main/docs/data/${filename}`
@@ -94,20 +91,34 @@
             console.log("---------------------")
             console.log("PART 1...")
 
+            console.log("Number of Days:", data.length)
 
+            const earliest = data[data.length - 1]
+            const latest = data[0]
 
+            const earliestDate = earliest.timestamp
+            const latestDate = latest.timestamp
+
+            const earliestClose = parseFloat(earliest.adjusted_close)
+            const latestClose = parseFloat(latest.adjusted_close)
+
+            console.log("Earliest:", earliestDate, formatUSD(earliestClose))
+            console.log("Latest:", latestDate, formatUSD(latestClose))
+
+            const pctChange = (latestClose - earliestClose) / earliestClose
+            console.log("Percent Change:", formatPct(pctChange))
 
 
             console.log("---------------------")
             console.log("PART 2...")
 
+            document.getElementById("display-symbol").innerText = symbol
+            document.getElementById("display-earliest").innerText = `${earliestDate} (${formatUSD(earliestClose)})`
+            document.getElementById("display-latest").innerText = `${latestDate} (${formatUSD(latestClose)})`
+            document.getElementById("display-pct-change").innerText = formatPct(pctChange)
 
-
-
-
-
-            }).catch(function(error) {
-                console.error("ERROR:", error)
+        }).catch(function(error) {
+            console.error("ERROR:", error)
         })
 
     </script>

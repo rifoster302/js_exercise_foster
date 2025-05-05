@@ -83,25 +83,46 @@
             console.log("---------------------")
             console.log("PART 1...")
 
+            console.log("Number of Products:", products.length)
 
+            products.forEach(product => {
+                const price = parseFloat(product.price)
+                console.log(`${product.name}: ${formatUSD(price)}`)
+            })
 
+            const departments = []
+            products.forEach(product => {
+                if (!departments.includes(product.department)) {
+                    departments.push(product.department)
+                }
+            })
 
+            console.log("Number of Unique Departments:", departments.length)
+            departments.forEach(dep => console.log(dep.toUpperCase()))
+
+            const beverages = products.filter(product => product.department.toLowerCase() === "beverages")
+            console.log("Number of Beverage Products:", beverages.length)
+
+            const beveragePrices = beverages.map(product => parseFloat(product.price))
+            const avgBeveragePrice = d3.mean(beveragePrices)
+            console.log("Average Beverage Price:", formatUSD(avgBeveragePrice))
 
 
             console.log("---------------------")
             console.log("PART 2...")
 
+            const sortedProducts = products.slice().sort((a, b) => a.name.localeCompare(b.name))
 
+            const ul = document.getElementById("display-groceries")
+            sortedProducts.forEach(product => {
+                const li = document.createElement("li")
+                const price = parseFloat(product.price)
+                li.innerText = `${product.name}: ${formatUSD(price)}`
+                ul.appendChild(li)
+            })
 
-
-
-
-
-
-
-
-            }).catch(function(error) {
-                console.error("ERROR:", error)
+        }).catch(function(error) {
+            console.error("ERROR:", error)
         })
 
     </script>

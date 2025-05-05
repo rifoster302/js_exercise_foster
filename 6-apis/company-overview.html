@@ -40,7 +40,6 @@
         </ol>
     </p>
 
-
     <h2>Part 2</h2>
     <p>
         Write JavaScript code to answer the questions below.
@@ -66,62 +65,74 @@
     <div id="display-company-info">
         <p>Name: <span id="display-name">TODO</span></p>
         <p>Description: <span id="display-description">TODO</span></p>
-        <p>Website: <a id="display-link" href="#TODO">TODO</span></p>
+        <p>Website: <a id="display-link" href="#">TODO</a></p>
     </div>
-
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="text/javascript">
 
         // AVOID HARD-CODING THE CREDENTIALS
         // USE SESSION STORAGE TO MINIMIZE THE NUMBER OF TIMES WE HAVE TO PROVIDE THE CREDENTIAL
-        // check session storage for the API Key:
         var apiKey = sessionStorage.getItem("ALPHAVANTAGE_API_KEY")
         if (!apiKey) {
-            // if it isn't there, ask the user to supply it:
             apiKey = prompt("Please enter your AlphaVantage API key:")
-            // store it in the session for later (so it will persist after refreshing the page)
             sessionStorage.setItem("ALPHAVANTAGE_API_KEY", apiKey)
         }
 
-
-
-        // FUNCTION DEFINITION
         function lookupCompany() {
-            var symbol = inputSymbol.value
+            var symbol = document.getElementById("input-symbol").value.trim()
             console.log("SYMBOL:", symbol)
 
-            var requestUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${apiKey}`
+            var requestUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=demo`
             d3.json(requestUrl).then(function(data) {
                 console.log("RESPONSE:", data)
 
                 console.log("---------------------")
                 console.log("PART 1...")
 
+                // API LIMIT / INVALID SYMBOL HANDLING
+                if (!data || Object.keys(data).length === 0 || data.Note || data.Information || !data.Name) {
+                    console.warn("Likely API limit exceeded or invalid symbol.")
+                    alert("No valid company data found. You may be rate-limited or using a wrong symbol.")
+                    document.getElementById("display-name").innerText = "N/A"
+                    document.getElementById("display-description").innerText = "N/A"
+                    var linkEl = document.getElementById("display-link")
+                    linkEl.href = "#"
+                    linkEl.innerText = "N/A"
+                    return
+                }
 
-
-
-
+                console.log("Name:", data.Name)
+                console.log("Description:", data.Description)
+                console.log("Website:", data.Website)
 
                 console.log("---------------------")
                 console.log("PART 2...")
 
+                document.getElementById("display-name").innerText = data.Name || "N/A"
+                document.getElementById("display-description").innerText = data.Description || "N/A"
 
-
-
+                var site = data.Website
+                var linkEl = document.getElementById("display-link")
+                if (site) {
+                    linkEl.href = site
+                    linkEl.innerText = site
+                } else {
+                    linkEl.href = "#"
+                    linkEl.innerText = "N/A"
+                }
 
             }).catch(function(error) {
                 console.error("ERROR:", error)
+                alert("An error occurred. Check the console for more info.")
             })
         }
 
-        // FUNCTION INVOCATIONS
-        // invoke function when the page loads:
-        //lookupCompany()
-        // invoke function when button is clicked:
-        //lookupButton.addEventListener("click", lookupCompany, false)
+        // Initial fetch on page load
+        lookupCompany()
+
+        // Event listener for the lookup button
+        document.getElementById("lookup").addEventListener("click", lookupCompany)
 
     </script>
 </body>
