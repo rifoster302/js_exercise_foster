@@ -83,7 +83,7 @@
             var symbol = document.getElementById("input-symbol").value.trim()
             console.log("SYMBOL:", symbol)
 
-            var requestUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=demo`
+            var requestUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${apiKey}`
             d3.json(requestUrl).then(function(data) {
                 console.log("RESPONSE:", data)
 
@@ -112,15 +112,16 @@
                 document.getElementById("display-name").innerText = data.Name || "N/A"
                 document.getElementById("display-description").innerText = data.Description || "N/A"
 
-                var site = data.Website
-                var linkEl = document.getElementById("display-link")
-                if (site) {
-                    linkEl.href = site
-                    linkEl.innerText = site
-                } else {
-                    linkEl.href = "#"
-                    linkEl.innerText = "N/A"
-                }
+                var site = data.OfficialSite || data.Website
+var linkEl = document.getElementById("display-link")
+if (site && typeof site === "string" && site.startsWith("http")) {
+    linkEl.href = site
+    linkEl.innerText = site
+} else {
+    linkEl.href = "#"
+    linkEl.innerText = "N/A"
+}
+
 
             }).catch(function(error) {
                 console.error("ERROR:", error)
